@@ -1,7 +1,7 @@
 Module.register("MMM-Template", {
 
   defaults: {
-    exampleContent: ""
+    exampleContent: "Hello World"
   },
 
   /**
