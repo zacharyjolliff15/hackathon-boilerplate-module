@@ -23,7 +23,7 @@ git clone [GitHub url]
 ### Update
 
 ```bash
-cd ~/MagicMirror/modules/MMM-Template
+cd ~/MagicMirror/modules/MMM-Yolov6Camera
 git pull
 ```
 
@@ -33,7 +33,7 @@ To use this module, add it to the modules array in the `config/config.js` file:
 
 ```js
     {
-        module: 'MMM-Template',
+        module: 'MMM-Yolov6Camera',
         position: 'lower_third'
     },
 ```
@@ -42,7 +42,7 @@ Or you could use all the options:
 
 ```js
     {
-        module: 'MMM-Template',
+        module: 'MMM-Yolov6Camera',
         position: 'lower_third',
         config: {
             exampleContent: 'Welcome world'

@@ -1,4 +1,4 @@
-Module.register("MMM-Template", {
+Module.register("MMM-Yolov6Camera", {
 
   defaults: {
     exampleContent: "Hello World"

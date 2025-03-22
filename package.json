@@ -1,8 +1,8 @@
 {
-  "name": "mmm-template",
+  "name": "mmm-Yolov6Camera",
   "version": "1.0.0",
   "description": "[Module description]",
-  "main": "MMM-Template.js",
+  "main": "MMM-Yolov6Camera.js",
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
