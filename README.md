@@ -23,7 +23,7 @@ git clone [GitHub url]
 ### Update
 
 ```bash
-cd ~/MagicMirror/modules/MMM-Yolov6Camera
+cd ~/MagicMirror/modules/MMM-gemini-quote
 git pull
 ```
 
@@ -33,8 +33,8 @@ To use this module, add it to the modules array in the `config/config.js` file:
 
 ```js
     {
-        module: 'MMM-Yolov6Camera',
-        position: 'lower_third'
+        module: 'MMM-gemini-quote',
+        position: 'middle_center'
     },
 ```
 
@@ -42,8 +42,8 @@ Or you could use all the options:
 
 ```js
     {
-        module: 'MMM-Yolov6Camera',
-        position: 'lower_third',
+        module: 'MMM-gemini-quote',
+        position: 'middle_center',
         config: {
             exampleContent: 'Welcome world'
         }
