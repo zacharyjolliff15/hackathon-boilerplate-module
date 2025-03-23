@@ -29,13 +29,15 @@ Module.register("MMM-gemini-quote", {
     // Asynchronously fetch gemini quote & store it 
     fetchQuote: async function() {
         try {
-            // const { GoogleGenerativeAI } = await import("@google/generative-ai");
+            const { GoogleGenerativeAI } = await import("@google/generative-ai");
             const genAI = new GoogleGenerativeAI(this.config.apiKey);
             const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
             const prompt = "Give me a motivational quote to display on my screen. Only display the quote itself.";
             const result = await model.generateContent(prompt);
-            this.quoteText = result.response.text();
+            const response = await result.response;
+
+            this.quoteText = response.text();
         } catch (error) {
             console.error("Error fetching quote from Gemini:", error);
             this.quoteText = "Error fetching quote.";
