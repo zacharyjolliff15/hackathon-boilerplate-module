@@ -1,8 +1,6 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
 Module.register("MMM-gemini-quote", {
     defaults: {
-        updateInterval: 10, // Refresh quotes every 30 seconds
+        updateInterval: 15, // Refresh quotes every 30 seconds
         apiKey: 'AIzaSyAauA2p8okahW6ercDjloFvfJ98bqNX_0I',
         fadeSpeed: 3
     },
