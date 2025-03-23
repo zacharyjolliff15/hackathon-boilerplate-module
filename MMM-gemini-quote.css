@@ -1,10 +1,10 @@
 /* The blinking caret animation */
 @keyframes blinkingCaret {
     0%, 100% {
-        border-color: transparent;
+        opacity: 0;
     }
     50% {
-        border-color: #fff;
+        opacity: 1;
     }
 }
 
@@ -22,17 +22,18 @@
     opacity: 0;
     animation: fadeIn 0.5s ease-in-out forwards;
 
-    /* Border for the cursor (invisible by default) */
-    border-right: 2px solid transparent; 
-    animation: fadeIn 0.5s ease-in-out forwards, blinkingCaret 0.75s step-end infinite;
-}
-
-.MMM-gemini-quote .quote.typing {
-    border-right: 2px solid #fff; /* Show cursor when typing */
-}
-
-/* Text wrapping */
-.MMM-gemini-quote .quote {
+    /* Text wrapping */
     white-space: pre-wrap;  /* Preserve spaces and newlines */
     word-wrap: break-word;  /* Ensure long words break */
+}
+
+.MMM-gemini-quote .quote.typing::after {
+    content: "";
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background-color: #fff;
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blinkingCaret 0.75s step-end infinite;
 }

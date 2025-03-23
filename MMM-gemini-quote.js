@@ -59,6 +59,11 @@ Module.register("MMM-gemini-quote", {
             if (i < text.length) {
                 element.innerHTML += text[i]; // Add one character at a time
                 i++;
+    
+                // Update the cursor position
+                const span = document.createElement("span");
+                span.classList.add("cursor");
+                element.appendChild(span);
             } else {
                 clearInterval(typingInterval); // Stop once the whole text is shown
                 // Remove typing class after text is done
