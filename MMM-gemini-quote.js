@@ -1,3 +1,5 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 Module.register("MMM-gemini-quote", {
     defaults: {
         updateInterval: 30,     // in seconds
@@ -43,7 +45,6 @@ Module.register("MMM-gemini-quote", {
 
     // Get quote from Gemini API
     getQuote: async function() {
-        const { GoogleGenerativeAI } = await import('@google/generative-ai');
 
         const genAI = new GoogleGenerativeAI(this.config.apiKey);
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
@@ -51,8 +52,7 @@ Module.register("MMM-gemini-quote", {
 
         try {
             const result = await model.generateContent(prompt);
-            const response = await result.response;
-            return response.text();
+            return result.response.text();
         } catch (error) {
             console.error("Error fetching quote from Gemini:", error);
             throw error;
