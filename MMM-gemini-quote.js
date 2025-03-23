@@ -33,7 +33,6 @@ Module.register("MMM-gemini-quote", {
         }
     },
 
-    // Build DOM to display
     getDom: function() {
         const wrapper = document.createElement("div");
         wrapper.classList.add("MMM-gemini-quote");
@@ -41,12 +40,25 @@ Module.register("MMM-gemini-quote", {
         // Create a div with class "quote"
         const quoteEl = document.createElement("div");
         quoteEl.classList.add("quote");
-        
-        // Put the actual text into a data attribute
-        // The CSS above uses content: attr(data-text) in ::before
-        quoteEl.setAttribute("data-text", this.quoteText || "Loading...");
-        
         wrapper.appendChild(quoteEl);
+        
+        // Start the typewriter effect
+        this.typeText(quoteEl, this.quoteText || "Loading...");
+        
         return wrapper;
-      },
+    },
+    
+    typeText: function(element, text) {
+        element.innerHTML = ""; // Clear existing text
+        let i = 0;
+    
+        const typingInterval = setInterval(() => {
+            if (i < text.length) {
+                element.innerHTML += text[i]; // Add one character at a time
+                i++;
+            } else {
+                clearInterval(typingInterval); // Stop once the whole text is shown
+            }
+        }, 50); // Typing speed (adjust as needed)
+    }
 });

@@ -85,6 +85,6 @@
     /* Start with zero "visible width" and animate to 40em (or however wide) */
     max-width: 0;
     animation: 
-      typing 3s steps(50, end) 0.5s forwards, /* 50 steps, 3s long, starts at 0.5s delay */
+      typing 3s steps(100, end) 0.5s forwards, /* 50 steps, 3s long, starts at 0.5s delay */
       blinkingCaret 0.75s step-end infinite 3.5s; /* caret blinks after typing finishes */
   }
