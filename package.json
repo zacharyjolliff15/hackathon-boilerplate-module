@@ -1,33 +1,9 @@
 {
   "name": "mmm-gemini-quote",
   "version": "1.0.0",
-  "description": "[Module description]",
+  "description": "Magic Mirror module for displaying motivational quotes from Google Gemini AI",
   "main": "MMM-gemini-quote.js",
-  "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "test": "npm run lint"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+[GitHub url].git"
-  },
-  "keywords": [
-    "template"
-  ],
-  "author": "[Author]",
-  "license": "MIT",
-  "bugs": {
-    "url": "[GitHub url]/issues"
-  },
-  "homepage": "[GitHub url]#readme",
-  "devDependencies": {
-    "@eslint/js": "^9.10.0",
-    "@stylistic/eslint-plugin": "^2.7.2",
-    "eslint": "^9.10.0",
-    "globals": "^15.9.0"
-  },
   "dependencies": {
-    "@google/generative-ai": "^0.24.0"
+    "@google/generative-ai": "latest"
   }
 }

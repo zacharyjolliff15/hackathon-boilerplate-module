@@ -1,8 +1,8 @@
 Module.register("MMM-gemini-quote", {
     defaults: {
-        updateInterval: 15, // Refresh quotes every 30 seconds
-        apiKey: 'AIzaSyAauA2p8okahW6ercDjloFvfJ98bqNX_0I',
-        fadeSpeed: 3
+        updateInterval: 15, // Refresh quotes every 15 seconds
+        apiKey: 'AIzaSyAauA2p8okahW6ercDjloFvfJ98bqNX_0I',      // Your Gemini API key
+        fadeSpeed: 3        // Animation speed
     },
 
     // Load CSS
@@ -10,39 +10,27 @@ Module.register("MMM-gemini-quote", {
         return ["MMM-gemini-quote.css"];
     },
 
-    // Called by MagicMirror when module starts 
+    // Called by MagicMirror when module starts
     start: function() {
         Log.info("Starting module: " + this.name);
         this.quoteText = null; // Quote placeholder
-
-        // Fetch quote immediately
-        this.fetchQuote();
-
-        // Then fetch quote every updateInterval seconds
+        
+        // Tell node_helper to start
+        this.sendSocketNotification("START", this.config);
+        
+        // Schedule regular updates
         setInterval(() => {
-            this.fetchQuote();
-        }, this.config.updateInterval);
+            this.sendSocketNotification("GET_QUOTE", null);
+        }, this.config.updateInterval * 1000);
     },
 
-    // Asynchronously fetch gemini quote & store it 
-    fetchQuote: async function() {
-        try {
-            const { GoogleGenerativeAI } = require("@google/generative-ai");
-            const genAI = new GoogleGenerativeAI(this.config.apiKey);
-            const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-
-            const prompt = "Give me a motivational quote to display on my screen. Only display the quote itself.";
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
-
-            this.quoteText = response.text();
-        } catch (error) {
-            console.error("Error fetching quote from Gemini:", error);
-            this.quoteText = "Error fetching quote.";
+    // Socket notification received from node_helper
+    socketNotificationReceived: function(notification, payload) {
+        if (notification === "QUOTE_RESULT") {
+            // Update the displayed quote with what we got from the helper
+            this.quoteText = payload;
+            this.updateDom(this.config.fadeSpeed);
         }
-
-        // Tell MagicMirror to redraw DOM
-        this.updateDom(this.config.fadeSpeed);
     },
 
     // Build DOM to display
@@ -50,11 +38,11 @@ Module.register("MMM-gemini-quote", {
         const wrapper = document.createElement("div");
         const quote = document.createElement("div");
         quote.className = "small";
-
+        
         // If we haven't fetched a quote yet, just show "Loading..."
         quote.innerHTML = this.quoteText || "Loading...";
         wrapper.appendChild(quote);
-
+        
         return wrapper;
     }
 });
