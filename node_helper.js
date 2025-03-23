@@ -9,13 +9,13 @@ module.exports = NodeHelper.create({
         this.initialized = false;
     },
     
-    // Initialize the helper with the module's configuration
+    // initialize node helper
     initialize: function(config) {
         if (this.initialized) return;
         
         this.config = config;
         
-        // Create package.json for ESM support if it doesn't exist
+        //package.json content
         const moduleDir = path.resolve(__dirname);
         const packagePath = path.join(moduleDir, "package.json");
         
@@ -29,7 +29,7 @@ module.exports = NodeHelper.create({
             
             fs.writeFileSync(packagePath, JSON.stringify(packageJson, null, 2));
             
-            // Install dependencies
+            // get dependencies
             console.log("Installing Gemini AI dependencies...");
             try {
                 execSync("npm install", { cwd: moduleDir });
@@ -40,7 +40,7 @@ module.exports = NodeHelper.create({
             }
         }
         
-        // Create the ESM script that will handle the API calls
+        // handle API calls
         const geminiScriptPath = path.join(moduleDir, "gemini-api.mjs");
         
         if (!fs.existsSync(geminiScriptPath)) {
@@ -50,13 +50,13 @@ module.exports = NodeHelper.create({
         this.initialized = true;
     },
     
-    // Execute the ESM script to fetch a quote
+    // fetch quotes
     async getQuote() {
         const moduleDir = path.resolve(__dirname);
         const scriptPath = path.join(moduleDir, "gemini-api.mjs");
         
         try {
-            // Use dynamic import to load the ESM module
+            // load module
             const { execSync } = require('child_process');
             const cmd = `node --input-type=module -e "
                 import { fetchQuote } from '${scriptPath.replace(/\\/g, '\\\\')}';
