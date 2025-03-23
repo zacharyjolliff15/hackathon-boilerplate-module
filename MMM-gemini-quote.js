@@ -1,66 +1,60 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
 Module.register("MMM-gemini-quote", {
     defaults: {
-        updateInterval: 15,     // in seconds
-        fadeSpeed: 3,           // in seconds
-        apiKey: 'AIzaSyAauA2p8okahW6ercDjloFvfJ98bqNX_0I', // Add your Gemini API key here
+        updateInterval: 30, // Refresh quotes every 30 seconds
+        apiKey: 'AIzaSyAauA2p8okahW6ercDjloFvfJ98bqNX_0I',
+        fadeSpeed: 1000
     },
 
+    // Load CSS
     getStyles: function() {
         return ["MMM-gemini-quote.css"];
     },
 
-    // Define start variables
+    // Called by MagicMirror when module starts 
     start: function() {
         Log.info("Starting module: " + this.name);
-        this.loaded = false;
-        this.quote = "Loading...";
-        
-        // Schedule first update
-        var self = this;
-        setTimeout(function() {
-            self.updateQuote();
-            // Schedule regular updates
-            setInterval(function() {
-                self.updateQuote();
-            }, self.config.updateInterval * 1000);
-        }, this.config.initialLoadDelay * 1000);
+        this.quoteText = null; // Quote placeholder
+
+        // Fetch quote immediately
+        this.fetchQuote();
+
+        // Then fetch quote every updateInterval seconds
+        setInterval(() => {
+            this.fetchQuote();
+        }, this.config.updateInterval * 1000);
     },
 
-    // Update the quote
-    updateQuote: async function() {
-        this.quote = this.getQuote();
-        this.loaded = true;
-        this.updateDom(this.config.fadeSpeed * 10);
-    },
+    // Asynchronously fetch gemini quote & store it 
+    fetchQuote: async function() {
+        try {
+            const { GoogleGenerativeAI } = await import("@google/generative-ai");
+            const genAI = new GoogleGenerativeAI(this.config.apiKey);
+            const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-    // Get quote from Gemini API
-    getQuote: async function() {
+            const prompt = "Give me a motivational quote to display on my screen. Only display the quote itself.";
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
 
-        const genAI = new GoogleGenerativeAI(this.config.apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-        const prompt = "Give me a motivational quote to display on my screen. Only display the quote itself.";
-        const result = await model.generateContent(prompt);
-        return result.response.text();
-    },
-
-    // Override getDom - this should be synchronous
-    getDom: function() {
-        var wrapper = document.createElement("div");
-        
-        if (!this.loaded) {
-            wrapper.innerHTML = "Loading...";
-            wrapper.className = "dimmed light small";
-            return wrapper;
+            this.quoteText = response.text();
+        } catch (error) {
+            console.error("Error fetching quote from Gemini:", error);
+            this.quoteText = "Error fetching quote.";
         }
-        
-        var quoteElement = document.createElement("div");
-        quoteElement.className = "quote";
-        quoteElement.innerHTML = this.quote;
-        
-        wrapper.appendChild(quoteElement);
-        
+
+        // Tell MagicMirror to redraw DOM
+        this.updateDom(this.config.fadeSpeed);
+    },
+
+    // Build DOM to display
+    getDom: function() {
+        const wrapper = document.createElement("div");
+        const quote = document.createElement("div");
+        quote.className = "small";
+
+        // If we haven't fetched a quote yet, just show "Loading..."
+        quote.innerHTML = this.quoteText || "Loading...";
+        wrapper.appendChild(quote);
+
         return wrapper;
     }
 });
