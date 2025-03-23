@@ -36,13 +36,19 @@ Module.register("MMM-gemini-quote", {
     // Build DOM to display
     getDom: function() {
         const wrapper = document.createElement("div");
-        const quote = document.createElement("div");
-        quote.className = "medium";
+        // Add the top-level module class
+        wrapper.classList.add("MMM-gemini-quote");
         
-        // If we haven't fetched a quote yet, just show "Loading..."
-        quote.innerHTML = this.quoteText || "Loading...";
+        // Create the "quote" div, using the .quote class
+        const quote = document.createElement("div");
+        quote.classList.add("quote"); // This must match your CSS “.quote” selector
+        
+        // If we haven't fetched a quote, show "Loading..."
+        quote.textContent = this.quoteText || "Loading...";
+        
+        // Append to wrapper
         wrapper.appendChild(quote);
         
         return wrapper;
-    }
+    },
 });
