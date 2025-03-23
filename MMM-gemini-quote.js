@@ -23,12 +23,11 @@ Module.register("MMM-gemini-quote", {
     // Socket notification received from node_helper
     socketNotificationReceived: function(notification, payload) {
         if (notification === "QUOTE_RESULT") {
-            // Update the displayed quote with what we got from the helper
             this.quoteText = payload;
-            this.isListening = false; // Stop showing "Listening..." message
             this.updateDom(this.config.fadeSpeed);
         }
     },
+    
 
     getDom: function() {
         const wrapper = document.createElement("div");
