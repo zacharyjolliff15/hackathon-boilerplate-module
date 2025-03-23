@@ -21,7 +21,7 @@ Module.register("MMM-gemini-quote", {
         // Then fetch quote every updateInterval seconds
         setInterval(() => {
             this.fetchQuote();
-        }, this.config.updateInterval * 1000);
+        }, this.config.updateInterval);
     },
 
     // Asynchronously fetch gemini quote & store it 
