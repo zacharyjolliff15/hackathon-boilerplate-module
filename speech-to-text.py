@@ -1,37 +1,33 @@
-import socketio
-import vosk
+#!/usr/bin/env python3
+import sys
 import json
 import pyaudio
+import vosk
 
-# Connect to MagicMirror (on localhost)
-sio = socketio.Client()
-sio.connect('http://localhost:8080')  # MagicMirror port
+def main():
+    model = vosk.Model("vosk-model-en-us-0.42-gigaspeech")
+    recognizer = vosk.KaldiRecognizer(model, 16000)
+    p = pyaudio.PyAudio()
 
-# Load Vosk model
-model = vosk.Model("/path/to/vosk-model-small-en-us-0.15")
+    stream = p.open(format=pyaudio.paInt16,
+                    channels=1,
+                    rate=16000,
+                    input=True,
+                    frames_per_buffer=8000)
 
-recognizer = vosk.KaldiRecognizer(model, 16000)
-audio = pyaudio.PyAudio()
-stream = audio.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
+    print("Python: Vosk model loaded. Listening for voice...")
+    sys.stdout.flush()  # Make sure this prints immediately
 
-print("Listening for speech...")
-
-def send_to_magic_mirror(text):
-    print(f"Sending to MagicMirror: {text}")
-    sio.emit('speech_to_text', text)  # Emit event to MagicMirror
-
-try:
     while True:
-        data = stream.read(4000, exception_on_overflow=False)
-        if recognizer.AcceptWaveform(data):
-            result = json.loads(recognizer.Result())["text"]
-            if result.strip():
-                send_to_magic_mirror(result)
+        data = stream.read(16000, exception_on_overflow=False)
 
-except KeyboardInterrupt:
-    print("Stopping...")
-finally:
-    stream.stop_stream()
-    stream.close()
-    audio.terminate()
-    sio.disconnect()
+        if recognizer.AcceptWaveform(data):
+            result = recognizer.Result()
+            recognized_text = json.loads(result).get("text", "")
+
+            if recognized_text.strip():
+                print(recognized_text.strip())
+                sys.stdout.flush()
+
+if __name__ == "__main__":
+    main()
