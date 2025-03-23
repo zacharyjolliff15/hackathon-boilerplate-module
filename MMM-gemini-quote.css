@@ -1,4 +1,4 @@
-/* Existing fade animations */
+/* Example fade-in & fade-out (unchanged) */
 @keyframes fadeIn {
     from {
       opacity: 0;
@@ -21,19 +21,9 @@
     }
   }
   
-  /* Typewriter animation */
-  @keyframes typing {
-    from {
-      width: 0;
-    }
-    to {
-      /* 100% width reveals the entire text, but you can adjust if you need partial */
-      width: 100%;
-    }
-  }
-  
+  /* Blinking caret animation */
   @keyframes blinkingCaret {
-    from, to {
+    0%, 100% {
       border-color: transparent;
     }
     50% {
@@ -41,6 +31,27 @@
     }
   }
   
+  /* Typewriter animation: reveal from max-width: 0 to some large width (e.g. 40em).
+     We use "steps(X, end)" to approximate X total characters. */
+  @keyframes typing {
+    from {
+      max-width: 0;
+    }
+    to {
+      max-width: 40em; /* adjust as desired */
+    }
+  }
+  
+  /* The wrapper for your module */
+  .MMM-gemini-quote {
+    /* optional centering or layout */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  /* The container that holds our typed text */
   .MMM-gemini-quote .quote {
     font-size: 32px;
     color: #aaaaaa;
@@ -49,27 +60,31 @@
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
+    position: relative;
     
-    /* Fade in as you already had */
+    /* Fade in as before */
     opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
     
-    /* For the typewriter effect, we need overflow hidden and a border on the right for the blinking "caret". */
-    display: inline-block; /* shrinkwrap the text */
-    white-space: nowrap; /* no text wrap */
-    overflow: hidden; /* hide the text that isn't "typed" yet */
-    border-right: 2px solid #fff; /* the "caret" bar */
+    /* We'll place the actual text in a pseudo‐element */
+  }
+  
+  /* This pseudo‐element does the 'typing' effect */
+  .MMM-gemini-quote .quote::before {
+    content: attr(data-text);
+    display: inline-block;
+    
+    /* Let lines wrap when they hit our width limit */
+    white-space: pre-wrap; /* preserves newlines but wraps long lines */
+    overflow: hidden;
     box-sizing: border-box;
     
-    /* Chain multiple animations: 
-       - fadeIn first
-       - then typing (with slight delay)
-       - then optional fadeOut at the end if desired
-    */
+    /* The blinking caret on the right edge */
+    border-right: 2px solid #fff;
+    
+    /* Start with zero "visible width" and animate to 40em (or however wide) */
+    max-width: 0;
     animation: 
-      /* fade in first */
-      fadeIn 0.5s ease-in-out forwards,
-      /* then type for 3s, starting after fadeIn ends (so add a 0.5s delay) */
-      typing 3s steps(30, end) 0.5s forwards,
-      /* optional blinking caret that can run indefinitely */
-      blinkingCaret 0.7s step-end infinite 3.5s;
+      typing 3s steps(50, end) 0.5s forwards, /* 50 steps, 3s long, starts at 0.5s delay */
+      blinkingCaret 0.75s step-end infinite 3.5s; /* caret blinks after typing finishes */
   }

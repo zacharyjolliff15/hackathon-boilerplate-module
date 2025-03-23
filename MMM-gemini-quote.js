@@ -36,19 +36,17 @@ Module.register("MMM-gemini-quote", {
     // Build DOM to display
     getDom: function() {
         const wrapper = document.createElement("div");
-        // Add the top-level module class
         wrapper.classList.add("MMM-gemini-quote");
         
-        // Create the "quote" div, using the .quote class
-        const quote = document.createElement("div");
-        quote.classList.add("quote"); // This must match your CSS “.quote” selector
+        // Create a div with class "quote"
+        const quoteEl = document.createElement("div");
+        quoteEl.classList.add("quote");
         
-        // If we haven't fetched a quote, show "Loading..."
-        quote.textContent = this.quoteText || "Loading...";
+        // Put the actual text into a data attribute
+        // The CSS above uses content: attr(data-text) in ::before
+        quoteEl.setAttribute("data-text", this.quoteText || "Loading...");
         
-        // Append to wrapper
-        wrapper.appendChild(quote);
-        
+        wrapper.appendChild(quoteEl);
         return wrapper;
-    },
+      },
 });
