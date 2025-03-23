@@ -41,10 +41,10 @@ Module.register("MMM-gemini-quote", {
         const quoteEl = document.createElement("div");
         quoteEl.classList.add("quote");
         wrapper.appendChild(quoteEl);
-        
+    
         // Start the typewriter effect
         this.typeText(quoteEl, this.quoteText || "Loading...");
-        
+    
         return wrapper;
     },
     
@@ -52,12 +52,17 @@ Module.register("MMM-gemini-quote", {
         element.innerHTML = ""; // Clear existing text
         let i = 0;
     
+        // Add typing class to show the cursor
+        element.classList.add("typing");
+    
         const typingInterval = setInterval(() => {
             if (i < text.length) {
                 element.innerHTML += text[i]; // Add one character at a time
                 i++;
             } else {
                 clearInterval(typingInterval); // Stop once the whole text is shown
+                // Remove typing class after text is done
+                element.classList.remove("typing");
             }
         }, 50); // Typing speed (adjust as needed)
     }

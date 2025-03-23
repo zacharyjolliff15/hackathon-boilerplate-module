@@ -1,58 +1,14 @@
-/* Example fade-in & fade-out (unchanged) */
-@keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @keyframes fadeOut {
-    from {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    to {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-  }
-  
-  /* Blinking caret animation */
-  @keyframes blinkingCaret {
+/* The blinking caret animation */
+@keyframes blinkingCaret {
     0%, 100% {
-      border-color: transparent;
+        border-color: transparent;
     }
     50% {
-      border-color: #fff;
+        border-color: #fff;
     }
-  }
-  
-  /* Typewriter animation: reveal from max-width: 0 to some large width (e.g. 40em).
-     We use "steps(X, end)" to approximate X total characters. */
-  @keyframes typing {
-    from {
-      max-width: 0;
-    }
-    to {
-      max-width: 40em; /* adjust as desired */
-    }
-  }
-  
-  /* The wrapper for your module */
-  .MMM-gemini-quote {
-    /* optional centering or layout */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  
-  /* The container that holds our typed text */
-  .MMM-gemini-quote .quote {
+}
+
+.MMM-gemini-quote .quote {
     font-size: 32px;
     color: #aaaaaa;
     text-align: center;
@@ -61,30 +17,22 @@
     margin: 10px;
     border-radius: 5px;
     position: relative;
-    
-    /* Fade in as before */
+
+    /* Make sure opacity is 0 initially */
     opacity: 0;
     animation: fadeIn 0.5s ease-in-out forwards;
-    
-    /* We'll place the actual text in a pseudo‐element */
-  }
-  
-  /* This pseudo‐element does the 'typing' effect */
-  .MMM-gemini-quote .quote::before {
-    content: attr(data-text);
-    display: inline-block;
-    
-    /* Let lines wrap when they hit our width limit */
-    white-space: pre-wrap; /* preserves newlines but wraps long lines */
-    overflow: hidden;
-    box-sizing: border-box;
-    
-    /* The blinking caret on the right edge */
-    border-right: 2px solid #fff;
-    
-    /* Start with zero "visible width" and animate to 40em (or however wide) */
-    max-width: 0;
-    animation: 
-      typing 3s steps(100, end) 0.5s forwards, /* 50 steps, 3s long, starts at 0.5s delay */
-      blinkingCaret 0.75s step-end infinite 3.5s; /* caret blinks after typing finishes */
-  }
+
+    /* Border for the cursor (invisible by default) */
+    border-right: 2px solid transparent; 
+    animation: fadeIn 0.5s ease-in-out forwards, blinkingCaret 0.75s step-end infinite;
+}
+
+.MMM-gemini-quote .quote.typing {
+    border-right: 2px solid #fff; /* Show cursor when typing */
+}
+
+/* Text wrapping */
+.MMM-gemini-quote .quote {
+    white-space: pre-wrap;  /* Preserve spaces and newlines */
+    word-wrap: break-word;  /* Ensure long words break */
+}
