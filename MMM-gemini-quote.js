@@ -3,7 +3,7 @@ Module.register("MMM-gemini-quote", {
     defaults: {
         updateInterval: 30,        
         fadeSpeed: 30,            
-        apiKey: 'AIzaSyAauA2p8okahW6ercDjloFvfJ98bqNX_0I', 
+        apiKey: 'AIzaSyAauA2p8okahW6ercDjloFvfJ98bqNX_0I',  // Replace with your actual API key
     },
 
     getStyles: function() {
@@ -23,7 +23,7 @@ Module.register("MMM-gemini-quote", {
     },
 
     async getQuote() {
-        const { GoogleGenerativeAI } = await import('@google/generative-ai');
+        const { GoogleGenerativeAI } = require('@google/generative-ai');  // Using require instead of import
 
         const genAI = new GoogleGenerativeAI(this.config.apiKey);
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
