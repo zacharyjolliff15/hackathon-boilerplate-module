@@ -1,8 +1,8 @@
 {
-  "name": "mmm-Yolov6Camera",
+  "name": "mmm-gemini-quote",
   "version": "1.0.0",
   "description": "[Module description]",
-  "main": "MMM-Yolov6Camera.js",
+  "main": "MMM-gemini-quote.js",
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -26,5 +26,8 @@
     "@stylistic/eslint-plugin": "^2.7.2",
     "eslint": "^9.10.0",
     "globals": "^15.9.0"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.0"
   }
 }
