@@ -37,7 +37,7 @@ Module.register("MMM-gemini-quote", {
     getDom: function() {
         const wrapper = document.createElement("div");
         const quote = document.createElement("div");
-        quote.className = "small";
+        quote.className = "medium";
         
         // If we haven't fetched a quote yet, just show "Loading..."
         quote.innerHTML = this.quoteText || "Loading...";
